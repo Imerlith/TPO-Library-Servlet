@@ -18,12 +18,6 @@ public class LibraryServlet extends HttpServlet {
         try {
 
             connection = DriverManager.getConnection("jdbc:derby:C:/DerbyDbs/Ksidb");
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT  * from AUTOR");
-            while (rs.next()){
-                String name = rs.getString("NAME");
-                System.out.println(name);
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -31,12 +25,34 @@ public class LibraryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.getWriter().println("Hello");
+        PrintWriter writer = resp.getWriter();
+
+        writer.println("\t ---Baza danych ksiazek--- \t");
+        if(connection!=null){
+            try {
+                Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery("SELECT  * from POZYCJE " +
+                        "inner join AUTOR on AUTOR.AUTID = POZYCJE.AUTID " +
+                        "inner join WYDAWCA on WYDAWCA.WYDID = POZYCJE.WYDID");
+                System.out.println("INSIDE if rs ");
+                while (rs.next()){
+                    String ISBN = rs.getString("ISBN");
+                    String authorName = rs.getString("WYDAWCA.NAME");
+                    String title = rs.getString("TYTUL");
+                    String publisherName = rs.getString("WYDID.NAME");
+                    String year = rs.getString("ROK");
+                    String price = rs.getString("CENA");
+
+                    System.out.println(ISBN+"\t"+authorName+"\t"+title+"\t"+publisherName+"\t"+year+"\t"+price);
+                }
+
+            } catch (SQLException e) {
+
+            }
+        }
+
     }
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       resp.getWriter().println("Hello");
-    }
+
 
 }
