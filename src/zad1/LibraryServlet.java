@@ -27,7 +27,8 @@ public class LibraryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
 
-        writer.println("\t ---Baza danych ksiazek--- \t");
+        writer.println("\t \t \t \t \t \t \t \t \t \t \t ---Baza danych ksiazek--- ");
+        writer.println("ISBN \t \t \t \t AUTOR \t \t \t TYTUL \t \t \t \t \t \t \t WYDAWNICTWO \t \t ROK \t CENA ");
         if(connection!=null){
             try {
                 Statement statement = connection.createStatement();
@@ -37,13 +38,13 @@ public class LibraryServlet extends HttpServlet {
                 System.out.println("INSIDE if rs ");
                 while (rs.next()){
                     String ISBN = rs.getString("ISBN");
-                    String authorName = rs.getString("WYDAWCA.NAME");
+                   // String authorName = rs.getString("AUTOR.NAME");
                     String title = rs.getString("TYTUL");
-                    String publisherName = rs.getString("WYDID.NAME");
+                    //String publisherName = rs.getString("WYDID.NAME");
                     String year = rs.getString("ROK");
                     String price = rs.getString("CENA");
 
-                    System.out.println(ISBN+"\t"+authorName+"\t"+title+"\t"+publisherName+"\t"+year+"\t"+price);
+                    writer.println(ISBN+"\t \t \t"+"autor"+"\t \t"+title+"\t \t \t \t \t \t \t"+"Wwydawnictwo"+"\t \t"+year+"\t"+price);
                 }
 
             } catch (SQLException e) {
